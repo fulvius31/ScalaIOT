@@ -3,13 +3,11 @@ import akka.actor.ActorRef
 import akka.actor.Props
 import akka.event.Logging
 
-class Sensors(broker: ActorRef) extends Actor {
+class Actuator extends Actor {
+ 
   val log = Logging(context.system, this)
-
   def receive = {
-    case "inizio" => 
-      broker ! SensorMessage("asd",1)
-      
+    case SensorMessage(topic, value) => println("i received "+topic)
     case _ => log.info("received unexcepted message")
    }
 }
