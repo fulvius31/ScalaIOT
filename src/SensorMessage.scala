@@ -1,2 +1,2 @@
 
-case class SensorMessage(Topic: String, value: Double)
+case class SensorMessage(topic: String, id: String)
