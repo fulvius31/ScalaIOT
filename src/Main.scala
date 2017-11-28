@@ -19,11 +19,11 @@ object Main extends App {
   val sensor0 = system.actorOf(Sensors.props(broker, 0, 10,"topic1" :: "topic2" :: Nil), name = "sensor0")
   val sensor1 = system.actorOf(Sensors.props(broker, 1, 3,"topic3" :: "topic4" :: "topic1" :: Nil), name = "sensor1")
 
-  broker ! "inizio"
+  broker ! "StartMessage"
   Thread.sleep(2000)
-  sensor0 ! "inizio"
+  sensor0 ! "StartMessage"
    Thread.sleep(1000)
-  sensor1 ! "inizio"
+  sensor1 ! "StartMessage"
  
 
 }

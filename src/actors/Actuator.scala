@@ -24,7 +24,7 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
 
   def receive = {
     case SensorMessage(topic, value) =>
-      log.info("HO RICEVUTO IL SEGUENTE TOPIC: " + topic + "  CON IL VALORE: " + value)
+      println("\tHO RICEVUTO IL SEGUENTE TOPIC: " + topic + "  CON IL VALORE: " + value+"\n")
       try {
         bw.write(SensorMessage(topic, value).toString() + id + "\n")
 
@@ -41,13 +41,13 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
       // out.close()
       // Thread.sleep(3000)
 
-    case "inizio" =>
+    case "StartMessage" =>
       sender() ! ConnectA(id, topicInterested)
 
     case "ack" =>
-      log.info("actuator" + id + " registered")
+      println("\tACTUATOR  " + id + " IS REGISTERED \n")
 
-    case _ => log.info("received unexcepted message")
+    case _ => println("\tRECEIVED UNEXCEPTED MESSAGE \n")
   }
 
 }

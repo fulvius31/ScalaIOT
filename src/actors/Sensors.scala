@@ -34,22 +34,22 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
     "schedule") }
 
   def receive = {
-    case "inizio" =>
+    case "StartMessage" =>
 
-      log.info("SONO IL SENSORE " + id + " TI INVIO " + numtopic + " topic")
+      println("\tSENSOR " + id + " SENDING " + numtopic + " TOPIC \n")
       broker ! ConnectS(id)
       Thread.sleep(1000)
 
     case "schedule" =>
   //    val canc = context.system.scheduler.schedule(0 seconds, 5 seconds)()  
-       println("SCHEDULA" +id)
+       println("\tSCHEDULE SENSOR" +id+"\n")
       var i = numtopic
      // while (i != 0) {
       //  i = i - 1
         broker ! TopicToSend()
       //}
 
-    case _ => log.info("received unexcepted message")
+    case _ => println("\tRECEIVED UNEXCEPTED MESSAGE \n")
   }
   
   //This will schedule to send the Tick-message

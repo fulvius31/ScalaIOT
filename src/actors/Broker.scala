@@ -17,7 +17,7 @@ import akka.pattern.ask
 import scala.concurrent.duration._
 import akka.pattern.ask
 import akka.util.Timeout
-import scala.concurrent.{ Await, Future}
+import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration._
 import scala.language.postfixOps
 import scala.concurrent.Await
@@ -47,19 +47,19 @@ class Broker(actuator: List[ActorRef]) extends Actor {
 
   def receive = {
     case "inizio" =>
-      actuator(0) ! "inizio"
-      actuator(1) ! "inizio"
-      actuator(2) ! "inizio"
+      actuator(0) ! "StartMessage"
+      actuator(1) ! "StartMessage"
+      actuator(2) ! "StartMessage"
 
     case ConnectS(id) =>
-      log.info("IL BROKER HA RICEVUTO LA CONNECTS DAL SENSORE " + id)
+      println("\tBROKER RECEIVED CONNECTS FROM SENSOR " + id + "\n")
       listS += ConnectS(id)
-      log.info("sensor" + id + " registered")
+      println("\tSENSOR " + id + " IS REGISTERED \n")
       sender() ! "ack"
       ReceivedMessageArchive(ConnectS.toString())
 
     case ConnectA(id, interestedTopic) =>
-      log.info("IL BROKER HA RICEVUTO UNA CONNECTA CON INTERESTED TOPIC  " + interestedTopic + " DALL'ATTUATORE " + id)
+      println("\tBROKER RECEIVED CONNECTA FROM ACTUATOR " + id + " WITH INTERESTED TOPIC" + interestedTopic + "\n")
       listA += ConnectA(id, interestedTopic)
       //mappa gli attuatori come id interestedTopic
       attuatori += (id -> interestedTopic)
@@ -67,20 +67,20 @@ class Broker(actuator: List[ActorRef]) extends Actor {
       sender() ! "ack"
 
     case SensorMessage(topic, value) =>
-      log.info("HO RICEVUTO UN SENSOR_MESSAGE CON TOPIC" + topic + " E VALORE" + value)
+      println("\tRECEIVED SENSORMESSAGE WITH TOPIC: " + topic + " AND VALUE: " + value + "\n")
       Thread.sleep(1000)
 
       //Ricerca degli attuatori interessati al topic
       var option = attuatori.filter(_._2.contains(topic)).map(_._1)
 
       for (i <- option) {
-        log.info("OPTION " + option + " INDICE " + i)
-        log.info("STO INOLTRANDO " + SensorMessage(topic, value).toString + " ALL'Attuatore DI INDICE " + i)
+        println("\tLIST OF INTERESTED ACTUATOR " + option + "\n")
+        println("\tFORWARDING " + SensorMessage(topic, value).toString + " TO ACTUATOR " + i + "\n")
 
         //topic del messaggio, valore, indice dell'attuatore interessato, numero tentativi.
         var ritrasmissione = RetrasmissionAckTimeoutBased(topic, value, i, 3)
 
-        log.info("MAPPA: " + attuatori)
+        //log.info("MAPPA: " + attuatori)
 
         sensori += (topic -> value)
       }
@@ -88,14 +88,14 @@ class Broker(actuator: List[ActorRef]) extends Actor {
     //   ReceivedMessageArchive(SensorMessage.toString())
 
     case _ =>
-      log.info("received unexcepted message")
-      ReceivedMessageArchive("received unexcepted message")
+      println("\tRECEIVED UNEXCEPTED MESSAGE \n")
+      ReceivedMessageArchive("\tRECEIVED UNEXCEPTED MESSAGE \n")
   }
 
   def ReceivedMessageArchive(message: String) = {
 
     archive += message
-    log.info(message + "  ARCHIVIATO")
+    println("\t"+message + "  ARCHIVED\n")
   }
 
   private def RetrasmissionAckTimeoutBased(topic: String, value: Int, i: Int, num: Int): Boolean = {
@@ -116,11 +116,11 @@ class Broker(actuator: List[ActorRef]) extends Actor {
       case e: TimeoutException =>
         if (num == 0) {
           None
-          println("TENTATIVI DI RITRASMISSIONE ESAURITI  ")
+          println("\tRETRASMISSION ATTEMPTS:"+num+"\n")
 
           return true
         } else {
-          println("NON HO RICEVUTO L'ACK, PROVO A RITRASMETTERE  " + num)
+          println("\tBROKER NOT RECEIVED ACK,NON HO RICEVUTO L'ACK, RETRANSMIT  " + num+"\n")
           RetrasmissionAckTimeoutBased(topic, value, i, num - 1)
           return true
         }
