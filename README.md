@@ -21,7 +21,4 @@ For Debian OS based:
  # How to start
  
  In the path Project:
- 
-    $cd ./src
-    $sbt
-    $sbt:ScalaIOT> run
+    $sbt compile run
