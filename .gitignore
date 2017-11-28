@@ -50,5 +50,3 @@ local.properties
 .scala_dependencies
 .worksheet
 .classpath
-/src/target
-/src/project
