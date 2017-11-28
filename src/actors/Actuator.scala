@@ -15,16 +15,15 @@ object Actuator {
 class Actuator(id: Int, topicInterested: List[String]) extends Actor {
   import Actuator._
   val log = Logging(context.system, this)
-  //  val out = new PrintWriter(new File("Actuator.txt"))
   val file: File = new File("Actuator.txt")
   val fw: FileWriter = new FileWriter(file, true);
   //BufferedWriter writer give better performance
   val bw: BufferedWriter = new BufferedWriter(fw);
-  //Closing BufferedWriter Stream
 
   def receive = {
     case SensorMessage(topic, value) =>
-      println("\tHO RICEVUTO IL SEGUENTE TOPIC: " + topic + "  CON IL VALORE: " + value+"\n")
+      println("\tACTUATOR RECEIVED TOPIC: " + topic + "  WITH VALUE: " + value + "\n")
+      //writing file
       try {
         bw.write(SensorMessage(topic, value).toString() + id + "\n")
 
@@ -33,13 +32,8 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
 
       } finally {
         bw.flush()
-        //bw.close()
         sender ! "ack"
       }
-
-      // out.write(SensorMessage(topic, value).toString() + "\n")
-      // out.close()
-      // Thread.sleep(3000)
 
     case "StartMessage" =>
       sender() ! ConnectA(id, topicInterested)
