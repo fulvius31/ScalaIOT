@@ -21,4 +21,5 @@ For Debian OS based:
  # How to start
  
  In the path Project:
-    $sbt compile run
+    
+      $sbt compile run
