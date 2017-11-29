@@ -26,3 +26,16 @@ SensorMessage(topic1,52)0
 SensorMessage(topic1,55)2
 SensorMessage(topic1,55)1
 SensorMessage(topic1,55)0
+SensorMessage(topic1,93)2
+SensorMessage(topic1,93)1
+SensorMessage(topic1,93)0
+SensorMessage(topic2,93)1
+SensorMessage(topic1,72)2
+SensorMessage(topic1,72)1
+SensorMessage(topic1,72)0
+SensorMessage(topic1,50)2
+SensorMessage(topic1,50)1
+SensorMessage(topic1,50)0
+SensorMessage(topic1,81)2
+SensorMessage(topic1,81)1
+SensorMessage(topic1,81)0
