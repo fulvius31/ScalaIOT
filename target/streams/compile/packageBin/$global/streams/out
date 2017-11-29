@@ -30,6 +30,10 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/actors[0m
 [0m[[0m[0mdebug[0m] [0m[0m	main/scala/actors/Sensors$$anonfun$props$1.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/actors/Sensors$$anonfun$props$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/scala/messages/Ack$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/messages/Ack$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/scala/messages/Ack.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/messages/Ack.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	main/scala/actors/Broker.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/actors/Broker.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	main/scala/messages/ConnectA$.class[0m

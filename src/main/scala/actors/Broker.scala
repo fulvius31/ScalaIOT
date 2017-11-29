@@ -56,7 +56,6 @@ class Broker(actuator: List[ActorRef]) extends Actor {
       //mapping actuator id -> interestedTopic
       attuatori += (id -> interestedTopic)
       ReceivedMessageArchive(ConnectA.toString())
-      sender() ! Ack()
 
     case SensorMessage(topic, value) =>
       println("\tRECEIVED SENSORMESSAGE WITH TOPIC: " + topic + " AND VALUE: " + value + "\n")
@@ -95,8 +94,8 @@ class Broker(actuator: List[ActorRef]) extends Actor {
 
       implicit val timeout = GlobalTimeout
 
-      var future: Future[String] = ask(actuator(idActuator), SensorMessage(topic, value)).mapTo[String]
-      val result = Await.result(future, timeout.duration).asInstanceOf[String]
+      var future: Future[Ack] = ask(actuator(idActuator), SensorMessage(topic, value)).mapTo[Ack]
+      val result = Await.result(future, timeout.duration).asInstanceOf[Ack]
       future.onComplete {
         case Success(result) => println("\tI RECEIVED  : " + result+"\n")
         case Failure(result) => println("\tFAULT \n")
