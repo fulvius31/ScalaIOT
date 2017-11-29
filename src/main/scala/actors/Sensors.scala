@@ -34,19 +34,19 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
 
     case StartMessage() =>
 
-      println("\tSENSOR " + id + " SENDING " + numtopic + " TOPIC \n")
+      println(Console.GREEN + "\tSENSOR " + id + " SENDING " + numtopic + " TOPIC \n")
       broker ! ConnectS(id)
       Thread.sleep(1000)
 
     case "schedule" =>
-      println("\tSCHEDULE SENSOR" + id + "\n")
+      println(Console.GREEN + "\tSCHEDULE SENSOR" + id + "\n")
       var i = numtopic
       // while (i != 0) {
       //  i = i - 1
       broker ! TopicToSend()
     //}
 
-    case _ => println("\tSENSOR RECEIVED UNEXCEPTED MESSAGE \n" )
+    case _ => println(Console.GREEN + "\tSENSOR RECEIVED UNEXCEPTED MESSAGE \n" )
   }
 
   private def TopicToSend(): SensorMessage =
