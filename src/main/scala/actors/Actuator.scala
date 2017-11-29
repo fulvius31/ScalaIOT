@@ -1,11 +1,11 @@
-package actors
+package main.scala.actors
 
 import akka.actor.Actor
 import java.io._
 import akka.actor.Props
 import akka.event.Logging
-import messages.SensorMessage
-import messages.ConnectA
+
+import main.scala.messages._
 import akka.actor.actorRef2Scala
 
 object Actuator {
@@ -35,13 +35,13 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
         sender ! "ack"
       }
 
-    case "StartMessage" =>
+    case StartMessage() =>
       sender() ! ConnectA(id, topicInterested)
 
     case "ack" =>
       println("\tACTUATOR  " + id + " IS REGISTERED \n")
 
-    case _ => println("\tRECEIVED UNEXCEPTED MESSAGE \n")
+    case _ => println("\tACTUATOR RECEIVED UNEXCEPTED MESSAGE \n")
   }
 
 }

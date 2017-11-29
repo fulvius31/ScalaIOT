@@ -1,4 +1,4 @@
-package actors
+package main.scala.actors
 
 import akka.actor.Actor
 import akka.actor.ActorRef
@@ -7,8 +7,7 @@ import akka.event.Logging
 import java.util.concurrent._
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import messages.ConnectS
-import messages.SensorMessage
+import main.scala.messages._
 import akka.actor.actorRef2Scala
 
 object Sensors {
@@ -34,7 +33,7 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
 
   def receive = {
 
-    case "StartMessage" =>
+    case StartMessage() =>
 
       println("\tSENSOR " + id + " SENDING " + numtopic + " TOPIC \n")
       broker ! ConnectS(id)
@@ -48,7 +47,7 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
       broker ! TopicToSend()
     //}
 
-    case _ => println("\tRECEIVED UNEXCEPTED MESSAGE \n")
+    case _ => println("\tSENSOR RECEIVED UNEXCEPTED MESSAGE \n" )
   }
 
   def TopicToSend(): SensorMessage =
