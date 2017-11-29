@@ -39,3 +39,6 @@ SensorMessage(topic1,50)0
 SensorMessage(topic1,81)2
 SensorMessage(topic1,81)1
 SensorMessage(topic1,81)0
+SensorMessage(topic1,62)2
+SensorMessage(topic1,62)1
+SensorMessage(topic1,62)0

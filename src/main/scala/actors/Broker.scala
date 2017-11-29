@@ -103,7 +103,7 @@ class Broker(actuator: List[ActorRef]) extends Actor {
       var future: Future[String] = ask(actuator(idActuator), SensorMessage(topic, value)).mapTo[String]
       val result = Await.result(future, timeout.duration).asInstanceOf[String]
       future.onComplete {
-        case Success(result) => println("\tHO RICEVUTO IL MESSAGGIO : " + result+"\n")
+        case Success(result) => println("\tI RECEIVED  : " + result+"\n")
         case Failure(result) => println("\tFAULT \n")
       }
 
