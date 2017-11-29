@@ -1,13 +1,12 @@
 package main.scala.actors
 
-import akka.actor.Actor
-import akka.actor.ActorRef
+import akka.actor.{ Actor, ActorRef }
 import akka.actor.Props
 import akka.event.Logging
 import java.util.concurrent._
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-import main.scala.messages._
+import main.scala.messages.{ StartMessage, ConnectS, SensorMessage }
 import akka.actor.actorRef2Scala
 
 object Sensors {
@@ -15,13 +14,13 @@ object Sensors {
 
 }
 class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String]) extends Actor {
+  
   val log = Logging(context.system, this)
   val r = scala.util.Random
 
   private var scheduledTask: ScheduledFuture[AnyRef] = null
 
   override def preStart() {
-
     // scheduling SensorMessage sending schedule
     val MessageScheduling =
       context.system.scheduler.schedule(
@@ -50,7 +49,7 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
     case _ => println("\tSENSOR RECEIVED UNEXCEPTED MESSAGE \n" )
   }
 
-  def TopicToSend(): SensorMessage =
+  private def TopicToSend(): SensorMessage =
     {
       val rnd = r.nextInt((listTopic.size - 0))
 

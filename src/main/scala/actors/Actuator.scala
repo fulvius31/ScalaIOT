@@ -1,11 +1,10 @@
 package main.scala.actors
 
 import akka.actor.Actor
-import java.io._
+import java.io.{ File, FileWriter, BufferedWriter, IOException }
 import akka.actor.Props
 import akka.event.Logging
-
-import main.scala.messages._
+import main.scala.messages.{ SensorMessage, StartMessage, ConnectA, Ack }
 import akka.actor.actorRef2Scala
 
 object Actuator {
@@ -14,16 +13,19 @@ object Actuator {
 }
 class Actuator(id: Int, topicInterested: List[String]) extends Actor {
   import Actuator._
+  
   val log = Logging(context.system, this)
+  
   val file: File = new File("Actuator.txt")
+  
   val fw: FileWriter = new FileWriter(file, true);
-  //BufferedWriter writer give better performance
+  
   val bw: BufferedWriter = new BufferedWriter(fw);
 
   def receive = {
     case SensorMessage(topic, value) =>
       println("\tACTUATOR RECEIVED TOPIC: " + topic + "  WITH VALUE: " + value + "\n")
-      //writing file
+      
       try {
         bw.write(SensorMessage(topic, value).toString() + id + "\n")
 
@@ -32,13 +34,13 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
 
       } finally {
         bw.flush()
-        sender ! "ack"
+        sender ! Ack()
       }
 
     case StartMessage() =>
       sender() ! ConnectA(id, topicInterested)
 
-    case "ack" =>
+    case Ack() =>
       println("\tACTUATOR  " + id + " IS REGISTERED \n")
 
     case _ => println("\tACTUATOR RECEIVED UNEXCEPTED MESSAGE \n")

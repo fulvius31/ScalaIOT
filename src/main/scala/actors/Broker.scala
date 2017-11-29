@@ -2,46 +2,41 @@
 package main.scala.actors
 
 import scala.concurrent.Await
-import akka.pattern.ask
-import akka.util.Timeout
 import scala.concurrent.duration._
-import akka.actor.Actor
+import akka.actor.{ Actor, ActorRef }
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{ Failure, Success }
-import akka.actor.ActorRef
 import akka.actor.Props
 import akka.event.Logging
 import scala.collection.mutable.ArrayBuffer
 import akka.pattern.ask
-import scala.concurrent.duration._
-import akka.pattern.ask
 import akka.util.Timeout
 import scala.concurrent.{ Await, Future }
-import scala.concurrent.duration._
 import scala.language.postfixOps
 import scala.concurrent.Await
 import java.util.concurrent.TimeoutException
 import main.scala
 import akka.actor.actorRef2Scala
 import main.scala.messages._
+
 object Broker {
   def props(actuator: List[ActorRef]): Props = Props(new Broker(actuator))
 
 }
 class Broker(actuator: List[ActorRef]) extends Actor {
-  val log = Logging(context.system, this)
+  private val log = Logging(context.system, this)
   //actuator list registered
-  var listA = new ListBuffer[ConnectA]()
+  private var listA = new ListBuffer[ConnectA]()
   //sensor list registered
-  var listS = new ListBuffer[ConnectS]()
+  private var listS = new ListBuffer[ConnectS]()
   //received message archive
-  val archive = new ArrayBuffer[String]
+  private val archive = new ArrayBuffer[String]
   //Timeout
-  val GlobalTimeout = Timeout(2 seconds)
+  private val GlobalTimeout = Timeout(2 seconds)
   //sensor and actuator map
-  var attuatori = collection.mutable.Map[Int, List[String]]()
-  val sensori = collection.mutable.Map[String, Int]()
+  private var attuatori = collection.mutable.Map[Int, List[String]]()
+  private val sensori = collection.mutable.Map[String, Int]()
 
   def receive = {
     case StartMessage() =>
@@ -61,7 +56,7 @@ class Broker(actuator: List[ActorRef]) extends Actor {
       //mapping actuator id -> interestedTopic
       attuatori += (id -> interestedTopic)
       ReceivedMessageArchive(ConnectA.toString())
-      sender() ! "ack"
+      sender() ! Ack()
 
     case SensorMessage(topic, value) =>
       println("\tRECEIVED SENSORMESSAGE WITH TOPIC: " + topic + " AND VALUE: " + value + "\n")
@@ -88,7 +83,7 @@ class Broker(actuator: List[ActorRef]) extends Actor {
       ReceivedMessageArchive("\tRECEIVED UNEXCEPTED MESSAGE \n")
   }
   //Archive all received message
-  def ReceivedMessageArchive(message: String) = {
+  private def ReceivedMessageArchive(message: String) = {
 
     archive += message
     println("\t" + message + " ARCHIVED\n")
