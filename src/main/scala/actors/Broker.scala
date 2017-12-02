@@ -21,10 +21,13 @@ import akka.actor.actorRef2Scala
 import main.scala.messages._
 
 object Broker {
-  def props(actuator: List[ActorRef]): Props = Props(new Broker(actuator))
+  def props(actuator: List[ActorRef], numact: Int): Props = Props(new Broker(actuator, numact))
+  var iterator_act = 0
 
 }
-class Broker(actuator: List[ActorRef]) extends Actor {
+class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
+  import Broker.iterator_act
+  
   private val log = Logging(context.system, this)
   //actuator list registered
   private var listA = new ListBuffer[ConnectA]()
@@ -40,10 +43,11 @@ class Broker(actuator: List[ActorRef]) extends Actor {
 
   def receive = {
     case StartMessage() =>
-      actuator(0) ! StartMessage()
-      actuator(1) ! StartMessage()
-      actuator(2) ! StartMessage()
-
+      while(numact > iterator_act){
+        actuator(iterator_act) ! StartMessage()
+        iterator_act = iterator_act + 1
+      }
+      
     case ConnectS(id) =>
       println(Console.YELLOW + "\tBROKER RECEIVED CONNECTS FROM SENSOR " + id + "\n")
       listS += ConnectS(id)

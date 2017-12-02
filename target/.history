@@ -8,3 +8,8 @@ build
 compiule
 compile
 run
+run Main2
+run lol
+runMain Main2
+runMain asdlol
+runMain Main2

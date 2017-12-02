@@ -50,6 +50,8 @@
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/messages[0m
 [0m[[0m[0mdebug[0m] [0m[0m	Main.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/Main.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	main/scala/Operation.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/Operation.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	main/scala/actors/Actuator.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	  /home/fulvius/eclipse-workspace/ScalaIOT/target/scala-2.11/classes/main/scala/actors/Actuator.class[0m
 [0m[[0m[0mdebug[0m] [0m[0m	main/scala/actors/Sensors$$anonfun$receive$1.class[0m

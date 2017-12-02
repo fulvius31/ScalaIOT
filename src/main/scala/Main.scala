@@ -1,27 +1,58 @@
-
 import akka.actor.{ ActorSystem, Props }
 import main.scala.actors.{ Actuator, Broker, Sensors }
 import main.scala.messages.StartMessage
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.ArrayBuffer
+import akka.actor.ActorRef
+import main.scala.Operation
+import main.scala.Operation
+
 object Main extends App {
-  
-  val TopicList  = List("topic1", "")
-  val TopicList2 = List("topic1", "topic2","topic1")
-  val TopicList3 = List("topic1")
-  
-  
+
+  val operation = new Operation
+  println("Number of Topics :")
+  val numtopic = readInt()
+  val topics = operation.InitTopics(numtopic)
+
+  println("Number of actuators :")
+  val numact = readInt()
+  val topicforact = operation.InitActuators(numact,numtopic)
+
+  val TopicList = topics.toList
+
   val system = ActorSystem("ScalaIOT")
 
-  val actuator = system.actorOf(Actuator.props(0, TopicList), name = "actuator0") :: system.actorOf(
-    Actuator.props(1, TopicList2),
-    name = "actuator1") :: system.actorOf(Actuator.props(2, TopicList3), name = "actuator2") :: Nil
+  var actuators = new ListBuffer[ActorRef]
 
-  val broker   = system.actorOf(Broker.props(actuator), name = "broker")
+  var i = 0
+  while (numact > i) {
+    actuators += system.actorOf(Actuator.props(i, TopicList.take(topicforact(i))), name = "actuator" + (i).toString())
+    i = i + 1
+  }
 
-  val sensor0  = system.actorOf(Sensors.props(broker, 0, 10,"topic1" :: "topic2" :: Nil), name = "sensor0")
-  val sensor1  = system.actorOf(Sensors.props(broker, 1, 3,"topic3" :: "topic4" :: "topic1" :: Nil), name = "sensor1")
+  i = 0
+  println("Number of sensors :")
+  val numsens = readInt()
+  val topicforsens = operation.InitSensors(numsens,numtopic)
+  var sensors = new ListBuffer[ActorRef]
 
-  broker  ! StartMessage()
+  val actuator = actuators.toList
+  val broker = system.actorOf(Broker.props(actuator, numact), name = "broker")
+
+  while (numsens > i) {
+
+    sensors += system.actorOf(Sensors.props(broker, i, topicforsens(i), TopicList.take(topicforact(i))), name = "sensor" + i.toString())
+    i = i+1
+  }
+
+  val sensor = sensors.toList
+ 
+  broker ! StartMessage()
+
+  i = 0
   
-  sensor0 ! StartMessage()
-  sensor1 ! StartMessage()
+  while(numsens > i){
+    sensor(i) ! StartMessage()
+    i = i+1
+  }
 }
