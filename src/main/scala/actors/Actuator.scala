@@ -40,8 +40,7 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
     case StartMessage() =>
       sender() ! ConnectA(id, topicInterested)
 
-    case Ack() =>
-      println(Console.CYAN +  "\tACTUATOR  " + id + " IS REGISTERED \n")
+  
 
     case _ => println(Console.CYAN +  "\tACTUATOR RECEIVED UNEXCEPTED MESSAGE \n")
   }

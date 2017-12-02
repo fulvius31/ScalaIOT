@@ -18,7 +18,6 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
   val log = Logging(context.system, this)
   val r = scala.util.Random
 
-  private var scheduledTask: ScheduledFuture[AnyRef] = null
 
   override def preStart() {
     // scheduling SensorMessage sending schedule
@@ -40,7 +39,7 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
 
     case "schedule" =>
       println(Console.GREEN + "\tSCHEDULE SENSOR" + id + "\n")
-      var i = numtopic
+      //var i = numtopic
       // while (i != 0) {
       //  i = i - 1
       broker ! TopicToSend()
