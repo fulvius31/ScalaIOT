@@ -19,6 +19,9 @@ import java.util.concurrent.TimeoutException
 import main.scala
 import akka.actor.actorRef2Scala
 import main.scala.messages._
+import java.io.{ File, FileWriter, BufferedWriter, IOException }
+
+
 
 object Broker {
   def props(actuator: List[ActorRef], numact: Int): Props = Props(new Broker(actuator, numact))
@@ -41,6 +44,7 @@ class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
   private var attuatori = collection.mutable.Map[Int, List[String]]()
   private val sensori = collection.mutable.Map[String, Int]()
 
+  
   def receive = {
     case StartMessage() =>
       while(numact > iterator_act){
@@ -53,16 +57,17 @@ class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
       listS += ConnectS(id)
       println(Console.YELLOW + "\tSENSOR " + id + " IS REGISTERED \n")
       ReceivedMessageArchive(ConnectS.toString())
-
+      WriteInFile(ConnectS(id).toString())
     case ConnectA(id, interestedTopic) =>
       println(Console.YELLOW + "\tBROKER RECEIVED CONNECTA FROM ACTUATOR " + id + " WITH INTERESTED TOPIC" + interestedTopic + "\n")
       listA += ConnectA(id, interestedTopic)
       //mapping actuator id -> interestedTopic
       attuatori += (id -> interestedTopic)
       ReceivedMessageArchive(ConnectA.toString())
-
+      WriteInFile(ConnectA(id, interestedTopic).toString())
     case SensorMessage(topic, value) =>
       println(Console.YELLOW + "\tRECEIVED SENSORMESSAGE WITH TOPIC: " + topic + " AND VALUE: " + value + "\n")
+      WriteInFile(SensorMessage(topic,value).toString())
       Thread.sleep(1000)
 
       //Searching topic in all topicLIst, return a list with id of actuators interested
@@ -84,6 +89,7 @@ class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
     case _ =>
       println(Console.YELLOW + "\tBROKER RECEIVED UNEXCEPTED MESSAGE  \n")
       ReceivedMessageArchive(Console.YELLOW + "\tRECEIVED UNEXCEPTED MESSAGE \n")
+      WriteInFile("RECEIVED UNEXCEPTED MESSAGE ")
   }
   //Archive all received message
   private def ReceivedMessageArchive(message: String) = {
@@ -120,5 +126,27 @@ class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
         }
     }
   }
+  
+  
+  
+   private def WriteInFile(message: String) = {
+
+     
+      val file: File = new File("Message.txt")
+  
+  val fw: FileWriter = new FileWriter(file, true);
+  
+  val bw: BufferedWriter = new BufferedWriter(fw);
+   try {
+        bw.write("\t"+message +"\n")
+
+      } catch {
+        case e: IOException => None
+
+      } finally {
+        bw.flush()
+        
+      }
+ }
 
 }

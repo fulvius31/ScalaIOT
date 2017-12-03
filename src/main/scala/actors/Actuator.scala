@@ -27,7 +27,7 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
       println(Console.CYAN + "\tACTUATOR RECEIVED TOPIC: " + topic + "  WITH VALUE: " + value + "\n")
       
       try {
-        bw.write(SensorMessage(topic, value).toString() + id + "\n")
+        bw.write(SensorMessage(topic, value).toString() +" for actuator "+ id + "\n")
 
       } catch {
         case e: IOException => None
