@@ -10,21 +10,22 @@ import main.scala.messages.{ StartMessage, ConnectS, SensorMessage }
 import akka.actor.actorRef2Scala
 
 object Sensors {
-  def props(broker: ActorRef, id: Int, numTopic: Int, listTopic: List[String]): Props = Props(new Sensors(broker, id, numTopic, listTopic))
+  def props(broker: ActorRef, id: Int, numTopic: Int, listTopic: List[String], freq: Int): Props = Props(new Sensors(broker, id, numTopic, listTopic, freq))
 
 }
-class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String]) extends Actor {
+class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String], freq: Int) extends Actor {
   
   val log = Logging(context.system, this)
   val r = scala.util.Random
 
 
   override def preStart() {
+   val frequency = new FiniteDuration(freq,TimeUnit.SECONDS)
     // scheduling SensorMessage sending schedule
     val MessageScheduling =
       context.system.scheduler.schedule(
         0 milliseconds,
-        3 seconds,
+        frequency,
         self,
         "schedule")
   }

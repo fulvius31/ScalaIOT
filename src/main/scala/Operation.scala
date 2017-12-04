@@ -51,5 +51,21 @@ class Operation {
     return topicforsens
 
   }
+  def InitFreq(numsens: Int): Array[Int] = {
+    var freq = new Array[Int](numsens)
+    var i = 0
+    var read = 0
+    while (numsens > i) {
+      println("Frequency to send in seconds for sensor" + i.toString())
+      read = readInt()
+      if (read >= 0) {
+        freq(i) = read
+        i = i + 1
+      } else
+        println("Frequency MUST be more than zero second")
+    }
+    return freq
+
+  }
 
 }
