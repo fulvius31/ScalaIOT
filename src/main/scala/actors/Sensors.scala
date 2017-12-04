@@ -50,7 +50,7 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String])
 
   private def TopicToSend(): SensorMessage =
     {
-      val rnd = r.nextInt((listTopic.size - 0))
+      val rnd = r.nextInt((listTopic.size))
 
       return SensorMessage(listTopic(rnd), r.nextInt(50) + 50)
 

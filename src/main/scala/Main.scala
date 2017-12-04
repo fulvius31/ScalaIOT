@@ -41,7 +41,7 @@ object Main extends App {
 
   while (numsens > i) {
 
-    sensors += system.actorOf(Sensors.props(broker, i, topicforsens(i), TopicList.take(topicforact(i))), name = "sensor" + i.toString())
+    sensors += system.actorOf(Sensors.props(broker, i, topicforsens(i), TopicList.take(topicforsens(i))), name = "sensor" + i.toString())
     i = i+1
   }
 

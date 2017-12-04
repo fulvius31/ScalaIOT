@@ -41,7 +41,8 @@ class Operation {
     var read = 0
     while (numsens > i) {
       println("Number topics for sensor" + i.toString())
-      if (readInt() <= numtopic) {
+      read = readInt()
+      if (read <= numtopic) {
         topicforsens(i) = read
         i = i + 1
       } else
