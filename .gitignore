@@ -63,3 +63,6 @@ project/target/
 .history
 .cache
 .lib/
+# Stored Files
+Actuator.txt
+Message.txt
