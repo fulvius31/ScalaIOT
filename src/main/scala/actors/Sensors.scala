@@ -36,7 +36,6 @@ class Sensors(broker: ActorRef, id: Int, numtopic: Int, listTopic: List[String],
 
       println(Console.GREEN + "\tSENSOR " + id + " SENDING " + numtopic + " TOPIC \n")
       broker ! ConnectS(id)
-      Thread.sleep(1000)
 
     case "schedule" =>
       println(Console.GREEN + "\tSCHEDULE SENSOR" + id + "\n")

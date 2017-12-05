@@ -68,7 +68,6 @@ class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
     case SensorMessage(topic, value) =>
       println(Console.YELLOW + "\tRECEIVED SENSORMESSAGE WITH TOPIC: " + topic + " AND VALUE: " + value + "\n")
       WriteInFile(SensorMessage(topic,value).toString())
-      Thread.sleep(1000)
 
       //Searching topic in all topicLIst, return a list with id of actuators interested
       var option = attuatori.filter(_._2.contains(topic)).map(_._1)
