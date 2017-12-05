@@ -108,6 +108,8 @@ class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
       val result = Await.result(future, timeout.duration).asInstanceOf[Ack]
       future.onComplete {
         case Success(result) => println(Console.YELLOW + "\tI RECEIVED  : " + result+"\n")
+                                      WriteInFile("I RECEIVED  : " + result+ " FROM ACTUATOR "+idActuator)
+
         case Failure(result) => println(Console.YELLOW + "\tFAULT \n")
       }
 
