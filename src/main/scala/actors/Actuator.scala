@@ -34,7 +34,7 @@ class Actuator(id: Int, topicInterested: List[String]) extends Actor {
 
       } finally {
         bw.flush()
-        Thread.sleep(2000)
+       // Thread.sleep(2000)
         sender ! Ack()
       }
 
