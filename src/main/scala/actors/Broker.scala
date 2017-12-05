@@ -119,10 +119,12 @@ class Broker(actuator: List[ActorRef], numact: Int) extends Actor {
         if (numRetrasmission == 0) {
           None
           println(Console.YELLOW + "\tRETRASMISSION ATTEMPTS:" + numRetrasmission + "\n")
-
+                                    
           return true
         } else {
           println(Console.YELLOW + "\tBROKER NOT RECEIVED ACK,NON HO RICEVUTO L'ACK, RETRANSMIT  " + numRetrasmission + "\n")
+            WriteInFile("ACK NOT RECEIVED FOR ACTUATOR "+idActuator+" RETRASMISSION ATTEMPTS: "+numRetrasmission)
+
           RetrasmissionAckTimeoutBased(topic, value, idActuator, numRetrasmission - 1)
           return true
         }
